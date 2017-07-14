@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yepu.dao.PersonMapper">
+
+  <resultMap id="RM_Person" type="com.yepu.pojo.Person">
+      <id column="ID" javaType="java.lang.Integer" jdbcType="INTEGER" property="id"/>
+      <result column="NAME" javaType="java.lang.String" jdbcType="VARCHAR" property="name"/>
+      <result column="NAME_MSG" javaType="java.lang.String" jdbcType="VARCHAR" property="nameMsg"/>
+      <result column="PHONE" javaType="java.lang.String" jdbcType="VARCHAR" property="phone"/>
+      <result column="CARD" javaType="java.lang.String" jdbcType="VARCHAR" property="card"/>
+      <result column="NAME_IMG" javaType="java.lang.String" jdbcType="VARCHAR" property="nameImg"/>
+      <result column="USER_TYPE" javaType="java.lang.String" jdbcType="VARCHAR" property="userType"/>
+      <result column="CREATE_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" property="createTime"/>
+      <result column="UPDATE_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" property="updateTime"/>
+      <result column="USER_ID" javaType="java.lang.Integer" jdbcType="INTEGER" property="userId"/>
+      <result column="CHECKED_TIMES" javaType="java.lang.Integer" jdbcType="INTEGER" property="checkedTimes"/>
+  </resultMap>
+
+
+  <select id="getCount"  resultType="int">
+     SELECT COUNT(*) FROM Person
+  </select>
+
+
+
+  <select id="queryByParam" parameterType="com.yepu.pojo.Person" resultMap="RM_Person">
+    select
+     ID, NAME, NAME_MSG,PHONE, CARD, NAME_IMG,USER_TYPE, CREATE_TIME, UPDATE_TIME, USER_ID, CHECKED_TIMES
+    from Person
+    <where>
+      <if test="name != null and name !='' "> NAME = #{name} </if>
+      <if test="card != null and card !='' ">and CARD = #{card}</if>
+      <if test="userId != null and userId >0 ">and USER_ID = #{userId}</if>
+    </where>
+  </select>
+
+
+  <select id="queryByName" parameterType="java.lang.String" resultMap="RM_Person">
+    select
+     ID, NAME, NAME_MSG,PHONE, CARD, NAME_IMG,USER_TYPE, CREATE_TIME, UPDATE_TIME, USER_ID, CHECKED_TIMES
+    from Person
+    <where>
+      <if test="name != null and name !='' ">NAME LIKE CONCAT(CONCAT('%', #{name}),'%')</if>
+    </where>
+  </select>
+
+
+
+
+  <update id="update" parameterType="com.yepu.pojo.Person">
+    update Person set UPDATE_TIME = now()
+      <if test="name != null and name !='' ">,NAME = #{name}</if>
+      <if test="nameMsg != null and nameMsg !='' ">,NAME_MSG = #{nameMsg}</if>
+      <if test="phone != null and phone !='' ">,PHONE = #{phone}</if>
+      <if test="card != null and card !='' ">,CARD = #{card}</if>
+      <if test="nameImg != null and nameImg !='' ">,NAME_IMG = #{nameImg}</if>
+      <if test="userType != null and userType !='' ">,USER_TYPE = #{userType}</if>
+      <if test="checkedTimes != null and checkedTimes >0 ">,CHECKED_TIMES = #{checkedTimes}</if>
+    where USER_ID = #{userId}
+  </update>
+</mapper>

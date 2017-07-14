@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yepu.dao.UpLoadMapper">
+
+  <resultMap id="RM_UpLoadMapper" type="com.yepu.pojo.UpLoad">
+      <id column="ID" javaType="java.lang.Integer" jdbcType="INTEGER" property="id"/>
+      <result column="PHONE" javaType="java.lang.String" jdbcType="VARCHAR" property="phone"/>
+      <result column="NAME" javaType="java.lang.String" jdbcType="VARCHAR" property="name"/>
+      <result column="SEX" javaType="java.lang.String" jdbcType="CHAR" property="sex"/>
+      <result column="CARD" javaType="java.lang.String" jdbcType="VARCHAR" property="card"/>
+      <result column="MSG_PHONE" javaType="java.lang.String" jdbcType="VARCHAR" property="msgPhone"/>
+      <result column="ADDRESS" javaType="java.lang.String" jdbcType="VARCHAR" property="address"/>
+      <result column="TITLE" javaType="java.lang.String" jdbcType="VARCHAR" property="title"/>
+      <result column="TITLE_MSG" javaType="java.lang.String" jdbcType="VARCHAR" property="titleMsg"/>
+      <result column="IMG" javaType="java.lang.String" jdbcType="VARCHAR" property="img"/>
+      <result column="IS_DELETE" javaType="java.lang.String" jdbcType="CHAR" property="isDelete"/>
+      <result column="STATE" javaType="java.lang.String" jdbcType="CHAR" property="state"/>
+      <result column="TYPE" javaType="java.lang.String" jdbcType="CHAR" property="type"/>
+      <result column="CREATE_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" property="createTime"/>
+      <result column="UPDATE_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" property="updateTime"/>
+      <result column="USER_ID" javaType="java.lang.Integer" jdbcType="INTEGER" property="userId"/>
+  </resultMap>
+
+  <select id="queryByUserId" parameterType="java.lang.Integer" resultMap="RM_UpLoadMapper">
+    select
+    ID, PHONE, NAME, SEX, CARD, MSG_PHONE, ADDRESS, TITLE, TITLE_MSG, IMG, IS_DELETE,
+    STATE, TYPE, CREATE_TIME, UPDATE_TIME, USER_ID
+    from UpLoad
+    where USER_ID = #{userId}
+  </select>
+
+  <select id="selectByParam" parameterType="com.yepu.pojo.UpLoad" resultMap="RM_UpLoadMapper">
+    select
+    ID, PHONE, NAME, SEX, CARD, MSG_PHONE, ADDRESS, TITLE, TITLE_MSG, IMG, IS_DELETE,
+    STATE, TYPE, CREATE_TIME, UPDATE_TIME, USER_ID
+    from UpLoad
+    where PHONE = #{phone} and NAME = #{name} and CARD = #{card}
+  </select>
+
+  <insert id="insert" parameterType="com.yepu.pojo.UpLoad">
+    insert into UpLoad (
+    ID,
+    PHONE,
+    NAME,
+    SEX,
+    CARD,
+    MSG_PHONE,
+    ADDRESS,
+    TITLE,
+    TITLE_MSG,
+    IMG,
+    IS_DELETE,
+    STATE,
+    TYPE,
+     CREATE_TIME,
+     UPDATE_TIME,
+     USER_ID
+     ) values (
+       #{id},
+       #{phone},
+       #{name},
+       #{sex},
+      #{card},
+      #{msgPhone},
+      #{address},
+      #{title},
+      #{titleMsg},
+      #{img},
+      #{isDelete},
+      #{state},
+      #{type},
+      now(),
+      now(),
+      #{userId}
+      )
+  </insert>
+
+  <update id="updateById" parameterType="com.yepu.pojo.UpLoad">
+    update UpLoad set UPDATE_TIME = now()
+    <if test="phone != null and phone !='' ">,PHONE = #{phone}</if>
+    <if test="name != null and name !='' ">,NAME = #{name}</if>
+    <if test="sex != null and sex !='' ">,SEX = #{sex}</if>
+    <if test="card != null and card !='' ">,CARD = #{card}</if>
+    <if test="msgPhone !=null and msgPhone !='' ">,MSG_PHONE = #{msgPhone}</if>
+    <if test="address !=null and address !='' ">,ADDRESS = #{address}</if>
+    <if test="title !=null and title!='' ">,TITLE = #{title}</if>
+    <if test="titleMsg != null and titleMsg !='' ">,TITLE_MSG = #{titleMsg}</if>
+    <if test="img !=null and img !='' ">,IMG = #{img}</if>
+    <if test="isDelete != null and isDelete !='' ">,IS_DELETE = #{isDelete}</if>
+    <if test="state != null and status !='' ">,STATE = #{state}</if>
+    <if test="type != null and type !='' ">,TYPE = #{type}</if>
+    where ID = #{id}
+  </update>
+
+</mapper>

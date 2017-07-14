@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yepu.dao.SearchMsgMapper">
+
+  <resultMap id="RM_SearchMsg" type="com.yepu.pojo.SearchMsg">
+      <id column="ID" javaType="java.lang.Integer" jdbcType="INTEGER" property="id"/>
+      <result column="ACCOUNT" javaType="java.lang.Integer" jdbcType="INTEGER" property="account"/>
+      <result column="SEARCH_MSG" javaType="java.lang.String" jdbcType="VARCHAR" property="searchMsg"/>
+      <result column="CREATE_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" property="createTime"/>
+      <result column="UPDATE_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" property="updateTime"/>
+      <result column="USER_ID" javaType="java.lang.Integer" jdbcType="INTEGER" property="userId"/>
+  </resultMap>
+
+  <select id="getMsgDayCount"  resultType="int">
+    SELECT COUNT(*) FROM SearchMsg
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="RM_SearchMsg">
+    select 
+    ID, ACCOUNT, SEARCH_MSG, CREATE_TIME, UPDATE_TIME, USER_ID
+    from SearchMsg
+    where USER_ID = #{userId}
+  </select>
+
+  <select id="queryByUserId" parameterType="java.lang.Integer" resultMap="RM_SearchMsg">
+    select
+    ID, ACCOUNT, SEARCH_MSG, CREATE_TIME, UPDATE_TIME, USER_ID
+    from SearchMsg
+    where USER_ID = #{userId}
+  </select>
+
+  <insert id="insert" parameterType="com.yepu.pojo.SearchMsg">
+    insert into SearchMsg (
+      ID,
+      ACCOUNT,
+      SEARCH_MSG,
+      CREATE_TIME,
+      UPDATE_TIME,
+      USER_ID
+      )values (
+      #{id},
+      #{account},
+      #{searchMsg},
+      #{createTime},
+      #{updateTime},
+      #{userId}
+      )
+  </insert>
+
+  <update id="update" parameterType="com.yepu.pojo.SearchMsg">
+    update SearchMsg
+      set UPDATE_TIME = now()
+      <if test="account != null and account > 0 ">,ACCOUNT = #{account,jdbcType=INTEGER}</if>
+      <if test="searchMsg != null and searchMsg !='' ">,SEARCH_MSG = #{searchMsg,jdbcType=VARCHAR}</if>
+    where USER_ID = #{userId}
+  </update>
+</mapper>
